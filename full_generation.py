@@ -1,12 +1,12 @@
 import argparse
 import os
+from datetime import datetime
 
 import torch
 import transformers
 
 from iglm.infill_utils import BAD_WORD_IDS, iglm_generate, CHAIN_TO_TOKEN, SPECIES_TO_TOKEN
 from util import set_seeds
-from datetime import datetime
 
 
 def main():

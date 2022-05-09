@@ -3,17 +3,15 @@ import os
 from collections import defaultdict
 from datetime import datetime
 
-import datasets
 import h5py
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
 import transformers
 from tqdm import tqdm
-from iglm.infill_utils import SPECIES_TO_TOKEN, CHAIN_TO_TOKEN
 
+from iglm.infill_utils import SPECIES_TO_TOKEN, CHAIN_TO_TOKEN
 from util import set_seeds
 
 
