@@ -15,7 +15,7 @@ To use IgLM to re-design spans of an antibody sequence, supply the fasta file, t
 
 To generate 100 unique sequences of the anti-tissue factor antibody (1JPT) heavy chain with an IgLM-designed CDR3:
 ```
-python3 infill.py data/antibodies/1jpt/1jpt.fasta :H 98 106 --chain_token [HEAVY] --species_token [HUMAN] --num_seqs 100 
+python infill.py data/antibodies/1jpt/1jpt.fasta :H 98 106 --chain_token [HEAVY] --species_token [HUMAN] --num_seqs 100 
 ```
 
 
