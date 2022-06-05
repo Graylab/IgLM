@@ -23,8 +23,8 @@ def main():
     now = str(datetime.now().strftime('%y-%m-%d %H:%M:%S'))
 
     parser = argparse.ArgumentParser(description='Test model predictions with alanine scans')
-    parser.add_argument('chkpt_dir', type=str, help='Model checkpoint directory')
     parser.add_argument('paired_csv_file', type=str, help='Paired sequence csv')
+    parser.add_argument('--chkpt_dir', type=str, default='trained_models/IgLM', help='Model checkpoint directory')
     parser.add_argument('--output_dir', type=str, default=f'output_dir/scan_evaluate_{now}')
     parser.add_argument('--mask_len', type=int, default=10)
     args = parser.parse_args()

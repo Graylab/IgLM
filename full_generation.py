@@ -5,21 +5,21 @@ from datetime import datetime
 import torch
 import transformers
 
-from iglm.infill_utils import BAD_WORD_IDS, iglm_generate, CHAIN_TO_TOKEN, SPECIES_TO_TOKEN
+from iglm.infill_utils import BAD_WORD_IDS, iglm_generate
 from util import set_seeds
 
 
 def main():
     """
-    Generate antibody sequences given chain and species tokens.
+    Generate full antibody sequences given chain and species tokens.
     """
     now = str(datetime.now().strftime('%y-%m-%d %H:%M:%S'))
 
     parser = argparse.ArgumentParser(description='Generate antibody sequences from scratch')
-    parser.add_argument('chkpt_dir', type=str, help='Model checkpoint directory')
+    parser.add_argument('--chkpt_dir', type=str, default='trained_models/IgLM', help='Model checkpoint directory')
     parser.add_argument('--prompt_tokens', type=str, help='Prompt tokens')
-    parser.add_argument('--chain', type=str, default='heavy', help='Chain to design (i.e. "heavy" or "light")')
-    parser.add_argument('--species', type=str, default='human', help='Species')
+    parser.add_argument('--chain_token', type=str, default='[HEAVY]', help='Chain to design (i.e. "heavy" or "light")')
+    parser.add_argument('--species_token', type=str, default='[HUMAN]', help='Species')
     parser.add_argument('--num_seqs', type=int, default=1000, help='Number of sequences to generate')
     parser.add_argument('--temperature', type=float, default=1, help='Sampling temperature')
     parser.add_argument('--top_p', type=float, default=1, help='p for top-p sampling')
@@ -40,14 +40,16 @@ def main():
     tokenizer = transformers.BertTokenizerFast(vocab_file=vocab_file, do_lower_case=False)
 
     # Get starting tokens
-    chain_token = CHAIN_TO_TOKEN[args.chain.capitalize()]
-    species_token = SPECIES_TO_TOKEN[args.species]
+    chain_token = args.chain_token
+    species_token = args.species_token
 
     prompt_tokens = list(args.prompt_tokens)
     start_tokens = [chain_token, species_token]
     start_tokens += prompt_tokens
-    print(f"Starting tokens: {start_tokens}")
     start_tokens = torch.Tensor([tokenizer.convert_tokens_to_ids(start_tokens)]).int().to(device)
+    print(f"Generating with starting tokens: {tokenizer.decode(start_tokens.squeeze())}")
+
+    assert (start_tokens != tokenizer.unk_token_id).all(), "Unrecognized token supplied in starting tokens"
 
     # Generate designed seqs
     generated_seqs = iglm_generate(model, start_tokens, tokenizer, num_to_generate=args.num_seqs,

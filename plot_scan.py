@@ -8,9 +8,9 @@ import numpy as np
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Plot clean scan resultss')
+    parser = argparse.ArgumentParser(description='Plot results from scan_evaluate.py to visualize infilling perplexity as a function of span position along heavy/light chain sequence')
     now = str(datetime.now().strftime('%y-%m-%d %H:%M:%S'))
-    parser.add_argument('scan_h5', type=str, help='Scan evaluate h5')
+    parser.add_argument('scan_h5', type=str, help='h5 output from scan_evaluate.py')
     parser.add_argument('--output_dir', type=str, default=f'output_dir/plot_scan_{now}')
     args = parser.parse_args()
 

@@ -15,9 +15,8 @@ from util import set_seeds
 
 def main():
     now = str(datetime.now().strftime('%y-%m-%d %H:%M:%S'))
-
     parser = argparse.ArgumentParser(description='Generate t-SNE plot of model input embeddings.')
-    parser.add_argument('chkpt_dir', type=str, help='Model checkpoint directory')
+    parser.add_argument('--chkpt_dir', type=str, default='trained_models/IgLM', help='Model checkpoint directory')
     parser.add_argument('--vocab_file', type=str, default='./vocab.txt', help='Vocabulary file for model')
     parser.add_argument('--output_dir', type=str, default=f'output_dir/embeddings_{now}')
     args = parser.parse_args()
