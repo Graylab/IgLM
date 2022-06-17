@@ -1,6 +1,8 @@
 # IgLM
 Official repository for IgLM: [Generative Language Modeling for Antibody Design](https://www.biorxiv.org/content/10.1101/2021.12.13.472419v1)
 
+The code and pre-trained models from this work are made available for non-commercial use under the terms of the JHU Academic Software License Agreement.
+
 ## Setup
 To use IgLM, install dependencies using conda:
 
