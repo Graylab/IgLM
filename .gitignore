@@ -1,1 +1,83 @@
-.idea
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# PyCharm
+.idea/
+venv/
+__pycache__/
+
+# VS Code
+.vscode/
+
+# Project Specific (C++)
+bin/
+CMakeFiles/
+cmake_lib
+CMakeCache.txt
+CMakeLists.txt
+*.cmake
+
+# Protein files
+*.pdb
+*.fasta
+*.aln  # Multiple Sequence Alignment (MSA) files
+
+# Condor error output directory
+data/scripts/outerr/
+
+# Data directories
+antibody_database/
+trained_models/
+
+# Etc.
+*.p
+*.swp
+*.csv
+*.tsv
+*.txt
+*.zip
+*.h5
+*.pyc
+*.png
+.ipynb_checkpoints/
+trained_models/
+ROSETTA_CRASH.log
+output_dir/
+/scripts/
+/data/
+dist/
+temp/
+.DS_Store
+lightning_logs/
+wandb/
+*.egg-info/
