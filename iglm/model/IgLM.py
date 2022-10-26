@@ -115,7 +115,7 @@ class IgLM():
 
         return generated_seqs
 
-    def neg_log_likelihood(
+    def log_likelihood(
         self,
         chain_token,
         species_token,
@@ -123,16 +123,42 @@ class IgLM():
         infill_range=None,
         batch_size=1,
     ):
-        masked_seq = mask_span(
-            sequence,
-            infill_range[0],
-            infill_range[1],
-            append_span=True,
-        )  # mask using provided indices
-        start_tokens = [chain_token, species_token] + masked_seq
-        start_tokens = torch.Tensor([
-            self.tokenizer.convert_tokens_to_ids(start_tokens)
+        if exists(infill_range):
+            sequence = mask_span(
+                sequence,
+                infill_range[0],
+                infill_range[1],
+                append_span=True,
+            )  # mask using provided indices
+
+        token_seq = [chain_token, species_token] + sequence
+
+        if exists(infill_range):
+            token_seq += [self.tokenizer.cls_token]
+        else:
+            token_seq += [self.tokenizer.sep_token]
+
+        token_seq = torch.Tensor([
+            self.tokenizer.convert_tokens_to_ids(token_seq)
         ]).int().to(self.device)
 
-        assert (start_tokens != self.tokenizer.unk_token_id
+        assert (token_seq != self.tokenizer.unk_token_id
                 ).all(), "Unrecognized token supplied in starting tokens"
+
+        if exists(infill_range):
+            eval_start = np.nonzero(
+                token_seq[0] == self.tokenizer.sep_token_id)[0].item()
+            # eval_start += 1  # start after sep token
+        else:
+            eval_start = 1
+
+        logits = self.model(token_seq).logits
+        shift_logits = logits[..., eval_start:-1, :].contiguous()
+        shift_labels = token_seq[..., eval_start + 1:].contiguous().long()
+        nll = torch.nn.functional.cross_entropy(
+            shift_logits.view(-1, shift_logits.size(-1)),
+            shift_labels.view(-1),
+            reduction='mean',
+        )
+
+        return -nll.item()
