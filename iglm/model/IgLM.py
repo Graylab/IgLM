@@ -17,7 +17,10 @@ VOCAB_FILE = os.path.join(project_path, os.path.pardir, 'vocab.txt')
 
 class IgLM():
 
-    def __init__(self, chkpt_dir=DEFAULT_CHKPT_DIR):
+    def __init__(self, chkpt_dir: str = None):
+        if not exists(chkpt_dir):
+            chkpt_dir = DEFAULT_CHKPT_DIR
+
         self.device = torch.device(
             'cuda' if torch.cuda.is_available() else 'cpu')
         self.model = transformers.GPT2LMHeadModel.from_pretrained(
@@ -121,7 +124,6 @@ class IgLM():
         species_token,
         sequence,
         infill_range=None,
-        batch_size=1,
     ):
         if exists(infill_range):
             sequence = mask_span(
@@ -148,7 +150,6 @@ class IgLM():
         if exists(infill_range):
             eval_start = np.nonzero(
                 token_seq[0] == self.tokenizer.sep_token_id)[0].item()
-            # eval_start += 1  # start after sep token
         else:
             eval_start = 1
 

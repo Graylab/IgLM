@@ -1,12 +1,10 @@
 import argparse
-import os
-from datetime import datetime
+import math
 
-import torch
-import transformers
 from Bio import SeqIO
 
 from iglm import IgLM
+from iglm.utils.general import exists
 from iglm.utils.seed import set_seeds
 
 
@@ -14,51 +12,64 @@ def main():
     """
     Generate antibody sequences given chain and species tokens.
     """
-    now = str(datetime.now().strftime('%y-%m-%d %H:%M:%S'))
 
     parser = argparse.ArgumentParser(
         description=
-        'Calculate log likelihood for an antibody sequence given chain and species tokens'
+        'Calculate log likelihood for an antibody sequence given chain and species tokens',
     )
-    # parser.add_argument('fasta_file', type=str, help='Antibody fasta file')
-    # parser.add_argument(
-    #     'record_id',
-    #     type=str,
-    #     help='Record ID in fasta corresponding to the sequence to design')
-    # parser.add_argument('start', type=int, help='Start index (0-indexed)')
-    # parser.add_argument('end',
-    #                     type=int,
-    #                     help='End index (0-indexed, exclusive)')
-    parser.add_argument('--chkpt_dir',
-                        type=str,
-                        default='trained_models/IgLM',
-                        help='Model checkpoint directory')
-    parser.add_argument('--chain_token',
-                        type=str,
-                        default='[HEAVY]',
-                        help='Chain to design (i.e. "heavy" or "light")')
-    parser.add_argument('--species_token',
-                        type=str,
-                        default='[HUMAN]',
-                        help='Species')
-    parser.add_argument('--output_dir',
-                        type=str,
-                        default=f'output_dir/infill_{now}')
-    parser.add_argument('--seed', type=int, default=0, help='Random seed')
+    parser.add_argument(
+        'fasta_file',
+        type=str,
+        help='Antibody fasta file',
+    )
+    parser.add_argument(
+        'record_id',
+        type=str,
+        help='Record ID in fasta corresponding to the sequence to design',
+    )
+    parser.add_argument(
+        '--start',
+        type=int,
+        default=None,
+        help='Start index (0-indexed)',
+    )
+    parser.add_argument(
+        '--end',
+        type=int,
+        default=None,
+        help='End index (0-indexed, exclusive)',
+    )
+    parser.add_argument(
+        '--chkpt_dir',
+        type=str,
+        default=None,
+        help='Model checkpoint directory',
+    )
+    parser.add_argument(
+        '--chain_token',
+        type=str,
+        default='[HEAVY]',
+        help='Chain to design (i.e. "heavy" or "light")',
+    )
+    parser.add_argument(
+        '--species_token',
+        type=str,
+        default='[HUMAN]',
+        help='Species',
+    )
+    parser.add_argument(
+        '--seed',
+        type=int,
+        default=0,
+        help='Random seed',
+    )
     args = parser.parse_args()
 
     # Reproducibility
     set_seeds(args.seed)
 
-    # Setup
-    os.makedirs(args.output_dir, exist_ok=True)
-
+    # Load model
     iglm = IgLM(chkpt_dir=args.chkpt_dir)
-
-    args.fasta_file = "/Users/jeffreyruffolo/Local/DeepH3_stuff/benchmarks/therapeutic_benchmark/fastas/1bey.fasta"
-    args.record_id = "1bey:H"
-    args.start = 90
-    args.end = 102
 
     # Load seq from fasta
     target_record = list(
@@ -68,23 +79,37 @@ def main():
                                     f"but got {len(target_record)} records"
     parent_seq = list(target_record[0].seq)
 
-    # infill_range = (args.start, args.end)
-    infill_range = None
+    # Get infill range if specified
+    if exists(args.start) and exists(args.end):
+        infill_range = (args.start, args.end)
+    else:
+        infill_range = None
 
     # Get starting tokens
     chain_token = args.chain_token
     species_token = args.species_token
 
-    # Generate seqs
-    print("Generating sequences to infill [MASK] token...")
-    score = iglm.log_likelihood(
+    # Score sequence
+    parent_seq_str = ''.join(parent_seq)
+    if exists(infill_range):
+        print(
+            f"Scoring subsequence: {parent_seq_str[infill_range[0]:infill_range[1]]}\n"
+            +
+            f"given {parent_seq_str[:infill_range[0]]}[MASK]{parent_seq_str[infill_range[1]:]}"
+        )
+    else:
+        print(f"Scoring sequence: {parent_seq_str}")
+
+    ll = iglm.log_likelihood(
         chain_token,
         species_token,
         parent_seq,
         infill_range=infill_range,
     )
+    ppl = math.exp(-ll)
 
-    print(f"Score: {score}")
+    print(f"Log likelihood: {round(ll, 3)}")
+    print(f"Perplexity: {round(ppl, 3)}")
 
 
 if __name__ == '__main__':
