@@ -5,12 +5,15 @@ The code and pre-trained models from this work are made available for non-commer
 
 ## Setup
 To use IgLM, install via pip:
-
 ```bash
 pip install iglm
 ```
 
 Alternatively, you can clone this repository and install the package locally:
+```bash
+$ git clone git@github.com:Graylab/IgLM.git 
+$ pip install IgFold
+```
 
 ## Command line usage
 
