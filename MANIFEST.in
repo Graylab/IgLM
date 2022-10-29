@@ -1,0 +1,2 @@
+include iglm/trained_models/IgLM/*
+include iglm/trained_models/vocab.txt

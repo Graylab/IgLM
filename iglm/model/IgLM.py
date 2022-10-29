@@ -10,21 +10,23 @@ from iglm.model.utils import *
 from iglm.utils.general import exists
 
 project_path = os.path.dirname(os.path.realpath(iglm.__file__))
-DEFAULT_CHKPT_DIR = os.path.join(project_path, os.path.pardir,
-                                 'trained_models/IgLM')
-VOCAB_FILE = os.path.join(project_path, os.path.pardir, 'vocab.txt')
+trained_models_dir = os.path.join(project_path, 'trained_models')
+
+CHECKPOINT_DICT = {
+    "IgLM": os.path.join(trained_models_dir, 'IgLM'),
+    "IgLM-S": os.path.join(trained_models_dir, 'IgLM-S'),
+}
+VOCAB_FILE = os.path.join(trained_models_dir, 'vocab.txt')
 
 
 class IgLM():
 
-    def __init__(self, chkpt_dir: str = None):
-        if not exists(chkpt_dir):
-            chkpt_dir = DEFAULT_CHKPT_DIR
-
+    def __init__(self, model_name: str = "IgLM"):
         self.device = torch.device(
             'cuda' if torch.cuda.is_available() else 'cpu')
+
         self.model = transformers.GPT2LMHeadModel.from_pretrained(
-            chkpt_dir).to(self.device)
+            CHECKPOINT_DICT[model_name]).to(self.device)
         self.model.eval()
 
         self.tokenizer = transformers.BertTokenizerFast(vocab_file=VOCAB_FILE,
@@ -60,7 +62,7 @@ class IgLM():
     def generate(self,
                  chain_token,
                  species_token,
-                 prompt_sequence,
+                 prompt_sequence=None,
                  num_to_generate=1000,
                  top_p=1,
                  temperature=1):
@@ -88,14 +90,15 @@ class IgLM():
 
     def infill(
         self,
+        sequence,
         chain_token,
         species_token,
-        sequence,
         infill_range,
         num_to_generate=1000,
         top_p=1,
         temperature=1,
     ):
+        sequence = list(sequence)
         masked_seq = mask_span(
             sequence,
             infill_range[0],
@@ -120,11 +123,12 @@ class IgLM():
 
     def log_likelihood(
         self,
+        sequence,
         chain_token,
         species_token,
-        sequence,
         infill_range=None,
     ):
+        sequence = list(sequence)
         if exists(infill_range):
             sequence = mask_span(
                 sequence,

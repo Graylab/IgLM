@@ -1,4 +1,4 @@
-BAD_WORD_IDS = [[25], [26], [27], [28], [29], [30], [31], [32]]
+BAD_WORD_IDS = [[0], [1], [25], [26], [27], [28], [29], [30], [31], [32]]
 MASK_TOKEN = '[MASK]'
 SEP_TOKEN = '[SEP]'
 ANS_TOKEN = '[ANS]'
@@ -24,7 +24,4 @@ SPECIES_TO_TOKEN = {
     "rhesus": "[RHESUS]",
 }
 
-CHAIN_TO_TOKEN = {
-    "Heavy": "[HEAVY]",
-    "Light": "[LIGHT]"
-}
+CHAIN_TO_TOKEN = {"Heavy": "[HEAVY]", "Light": "[LIGHT]"}
