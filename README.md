@@ -1,5 +1,5 @@
 # IgLM
-Official repository for IgLM: [Generative Language Modeling for Antibody Design](https://www.biorxiv.org/content/10.1101/2021.12.13.472419v1)
+Official repository for IgLM: [Generative Language Modeling for Antibody Design](https://www.biorxiv.org/content/10.1101/2021.12.13.472419v2)
 
 The code and pre-trained models from this work are made available for non-commercial use under the terms of the [JHU Academic Software License Agreement](LICENSE.md).
 
@@ -29,7 +29,7 @@ iglm_infill data/antibodies/1jpt/1jpt.fasta :H 98 106 --chain_token [HEAVY] --sp
 
 
 ### Full antibody sequence generation
-IgLM can be used to generate full antibody sequences while conditioning on the chain type and species-of-origin. See Appendix A.5 for starting tokens and sampling temperatures used for the results in the paper.
+IgLM can be used to generate full antibody sequences while conditioning on the chain type and species-of-origin.
 
 To generate 100 unique human heavy chain sequences starting with EVQ:
 ```bash
@@ -59,7 +59,7 @@ iglm_evaluate data/antibodies/1jpt/1jpt.fasta :H --start 98 --end 106 --chain_to
 IgLM may also be used as a Python package, enabling the above use cases and more flexible usage.
 
 ### Re-design spans of an antibody sequence
-To use IgLM to re-design spans of an antibody sequence, supply the fasta file, the fasta record ID corresponding to the sequence to design, the start index of the span (0-indexed), and the end index of the span (0-indexed, exclusive). 
+To use IgLM to re-design spans of an antibody sequence, supply the sequence to design, the start index of the span (0-indexed), and the end index of the span (0-indexed, exclusive). 
 
 To generate 100 unique sequences of the anti-tissue factor antibody (1JPT) heavy chain with an IgLM-designed CDR3:
 ```python
@@ -84,7 +84,7 @@ generated_seqs = iglm.infill(
 
 
 ### Full antibody sequence generation
-IgLM can be used to generate full antibody sequences while conditioning on the chain type and species-of-origin. See Appendix A.5 for starting tokens and sampling temperatures used for the results in the paper.
+IgLM can be used to generate full antibody sequences while conditioning on the chain type and species-of-origin.
 
 To generate 100 unique human heavy chain sequences starting with EVQ:
 ```python
