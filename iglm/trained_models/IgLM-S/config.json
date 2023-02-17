@@ -1,0 +1,32 @@
+{
+  "_name_or_path": "trained_models/IgLM_XS_chain_species_95/checkpoint-180000/",
+  "activation_function": "gelu_new",
+  "architectures": [
+    "GPT2LMHeadModel"
+  ],
+  "attn_pdrop": 0.1,
+  "bos_token_id": 50256,
+  "condition_on_chain": true,
+  "condition_on_species": true,
+  "embd_pdrop": 0.1,
+  "eos_token_id": 50256,
+  "gradient_checkpointing": false,
+  "initializer_range": 0.02,
+  "layer_norm_epsilon": 1e-05,
+  "model_type": "gpt2",
+  "n_ctx": 512,
+  "n_embd": 192,
+  "n_head": 6,
+  "n_inner": 768,
+  "n_layer": 3,
+  "n_positions": 512,
+  "resid_pdrop": 0.1,
+  "summary_activation": null,
+  "summary_first_dropout": 0.1,
+  "summary_proj_to_labels": true,
+  "summary_type": "cls_index",
+  "summary_use_proj": true,
+  "transformers_version": "4.5.1",
+  "use_cache": true,
+  "vocab_size": 33
+}
