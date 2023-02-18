@@ -12,7 +12,7 @@ pip install iglm
 Alternatively, you can clone this repository and install the package locally:
 ```bash
 $ git clone git@github.com:Graylab/IgLM.git 
-$ pip install IgFold
+$ pip install IgLM
 ```
 
 ## Command line usage
