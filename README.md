@@ -142,7 +142,6 @@ log_likelihood = iglm.log_likelihood(
     sequence,
     chain_token,
     species_token,
-    infill_range=infill_range,
 )
 perplexity = math.exp(-log_likelihood)
 ```
