@@ -3,6 +3,9 @@ Official repository for IgLM: [Generative Language Modeling for Antibody Design]
 
 The code and pre-trained models from this work are made available for non-commercial use under the terms of the [JHU Academic Software License Agreement](LICENSE.md).
 
+Try antibody sequence generation in [Google Colab](https://colab.research.google.com/github/Graylab/IgLM/blob/main/IgLM.ipynb).
+
+
 ## Setup
 To use IgLM, install via pip:
 ```bash
