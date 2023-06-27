@@ -169,3 +169,16 @@ log_likelihood = iglm.log_likelihood(
 )
 perplexity = math.exp(-log_likelihood)
 ```
+
+## Citing this work
+
+```bibtex
+@article{shuai2021generative,
+  title={Generative language modeling for antibody design},
+  author={Shuai, Richard W and Ruffolo, Jeffrey A and Gray, Jeffrey J},
+  journal={bioRxiv},
+  pages={2021--12},
+  year={2021},
+  publisher={Cold Spring Harbor Laboratory}
+}
+```
