@@ -1,7 +1,7 @@
 # IgLM
 Official repository for IgLM: [Generative Language Modeling for Antibody Design](https://www.biorxiv.org/content/10.1101/2021.12.13.472419v2).
 
-The code and pre-trained models from this work are made available for non-commercial use under the terms of the [JHU Academic Software License Agreement](LICENSE.md). For commercial inquiries, please contact Johns Hopkins Tech Ventures at `awichma2@jhu.edu`.
+The code and pre-trained models from this work are made available for non-commercial use under the terms of the [JHU Academic Software License Agreement](LICENSE.md). For commercial inquiries, please contact Johns Hopkins Tech Ventures at `awichma2@jhu.edu`. The training and test datasets for IgLM are available for download [here](https://data.graylab.jhu.edu/OAS95.tar.gz).
 
 Try antibody sequence generation in [Google Colab](https://colab.research.google.com/github/Graylab/IgLM/blob/main/IgLM.ipynb).
 
