@@ -173,12 +173,14 @@ perplexity = math.exp(-log_likelihood)
 ## Citing this work
 
 ```bibtex
-@article{shuai2021generative,
-  title={Generative language modeling for antibody design},
+@article{shuai2023iglm,
+  title={IgLM: Infilling language modeling for antibody sequence design},
   author={Shuai, Richard W and Ruffolo, Jeffrey A and Gray, Jeffrey J},
-  journal={bioRxiv},
-  pages={2021--12},
-  year={2021},
-  publisher={Cold Spring Harbor Laboratory}
+  journal={Cell Systems},
+  volume={14},
+  number={11},
+  pages={979--989},
+  year={2023},
+  publisher={Elsevier}
 }
 ```
